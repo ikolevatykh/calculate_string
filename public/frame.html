@@ -51,7 +51,7 @@
 
     let y = rects[SHIFT_RECT].y;
     const arrayStr = [];
-    for (let i = 0; i < rects.length - 1; i += 1) {
+    for (let i = 0; i < rects.length - SHIFT_RECT; i += 1) {
       if (y !== rects[i + SHIFT_RECT].y) {
         arrayStr.push('\n');
         y = rects[i + SHIFT_RECT].y;

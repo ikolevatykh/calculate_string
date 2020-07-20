@@ -19,9 +19,11 @@ function App() {
   return (
     <div className="App">
       <div className="input-container">
+        <h3>Input</h3>
         <textarea value={str} onChange={handleChangeInput} />
       </div>
       <div className="output-container">
+        <h3>Output</h3>
         <textarea defaultValue={convertedStr}/>
       </div>
       <div>calc time: {ms}ms</div>

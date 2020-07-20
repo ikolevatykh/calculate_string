@@ -6,7 +6,7 @@ export default str => new Promise(resolve => {
     type: 'calc',
     time: now,
     str,
-    browser: detect(),
+    browser: detect().name,
   }, '*');
 
   window.addEventListener("message", function(e) {
