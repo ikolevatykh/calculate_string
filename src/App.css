@@ -1,0 +1,35 @@
+.App {
+  text-align: center;
+  display: block;
+}
+
+.input-container {
+  display: inline-block;
+}
+.input-container > textarea {
+  width: 150px;
+  height: 300px;
+
+  box-sizing: border-box;
+  padding: 0;
+  word-break: break-all;
+  font-size: 12px;
+  font-family: sans-serif;
+  border: none;
+}
+
+.output-container {
+  display: inline-block;
+  margin-left: 50px;
+}
+.output-container > textarea {
+  width: 200px;
+  height: 300px;
+
+  box-sizing: border-box;
+  padding: 0;
+  word-break: break-all;
+  font-size: 12px;
+  font-family: sans-serif;
+  border: none;
+}
