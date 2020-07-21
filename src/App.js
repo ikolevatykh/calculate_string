@@ -2,7 +2,6 @@ import React from 'react';
 import convertString from './utils/convertString2';
 import './App.css';
 
-
 function App() {
   const [str, setStr] = React.useState('');
   const [convertedStr, setConvertedStr] = React.useState('');

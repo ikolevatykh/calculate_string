@@ -1,0 +1,12 @@
+#iframe-calc {
+    position: absolute;
+    display: inline-block;
+    top: -9999px;
+    left: -9999px;
+    height: 100px;
+    width: 100px;
+    visibility: hidden;
+    /*display: block;*/
+    /*width: 300px;*/
+    /*height: 300px;*/
+}
