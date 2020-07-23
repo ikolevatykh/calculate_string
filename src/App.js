@@ -1,4 +1,7 @@
 import React from 'react';
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
+import 'fast-text-encoding/text';
 import convertString from './utils/convertString2';
 import './App.css';
 
@@ -9,7 +12,14 @@ function App() {
 
   const handleChangeInput = e => {
     setStr(e.target.value);
-    convertString(e.target.value).then(({ result, time }) => {
+    if (e.target.value === '') {
+      setConvertedStr(e.target.value);
+      setMS(0);
+      return;
+    }
+
+    convertString(e.target.value).then(data => {
+      const { result, time } = data;
       setConvertedStr(result);
       setMS(time);
     });
@@ -23,7 +33,7 @@ function App() {
       </div>
       <div className="output-container">
         <h3>Output</h3>
-        <textarea defaultValue={convertedStr}/>
+        <textarea value={convertedStr} />
       </div>
       <div>calc time: {ms}ms</div>
     </div>

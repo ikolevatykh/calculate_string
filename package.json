@@ -7,6 +7,7 @@
     "@testing-library/react": "9.3.2",
     "@testing-library/user-event": "7.1.2",
     "detect-browser": "5.1.1",
+    "fast-text-encoding": "^1.0.3",
     "lodash": "^4.17.19",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -25,12 +26,17 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "IE 11"
     ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version",
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "IE 11"
     ]
   }
 }
