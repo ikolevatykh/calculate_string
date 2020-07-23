@@ -9,6 +9,8 @@ function App() {
   const [str, setStr] = React.useState('');
   const [convertedStr, setConvertedStr] = React.useState('');
   const [ms, setMS] = React.useState(0);
+  const [type, setType] = React.useState('calc');
+  const handleChangeMode = () => setType(type === 'calc' ? 'calc2' : 'calc');
 
   const handleChangeInput = e => {
     setStr(e.target.value);
@@ -18,7 +20,7 @@ function App() {
       return;
     }
 
-    convertString(e.target.value).then(data => {
+    convertString(type, e.target.value).then(data => {
       const { result, time } = data;
       setConvertedStr(result);
       setMS(time);
@@ -36,6 +38,10 @@ function App() {
         <textarea value={convertedStr} />
       </div>
       <div>calc time: {ms}ms</div>
+      <div>
+        <p>current mode: {type === 'calc' ? 'with createRange' : 'only getBoundingClientRect for every letters\' span'}</p>
+        <p><button onClick={handleChangeMode}>Switch mode</button></p>
+      </div>
     </div>
   );
 }

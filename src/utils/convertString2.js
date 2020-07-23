@@ -1,11 +1,11 @@
 import { detect } from 'detect-browser';
 
 class Request {
-  send(str) {
+  send(type, str) {
     return new Promise(resolve => {
       const now = performance.now();
       window.frames.iframeCalc.postMessage({
-        type: 'calc',
+        type: type || 'calc2',
         time: now,
         str,
         browser: detect().name,
@@ -26,8 +26,8 @@ class Request {
 class Queue {
   queue = []
 
-  add(str, resolve) {
-    this.queue.push({ str, resolve });
+  add(type, str, resolve) {
+    this.queue.push({ type, str, resolve });
 
     if (this.queue.length === 1) {
       this.next();
@@ -39,10 +39,10 @@ class Queue {
       return;
     }
 
-    const { str, resolve } = this.queue[0];
+    const { type, str, resolve } = this.queue[0];
 
     (new Request())
-      .send(str)
+      .send(type, str)
       .then(data => resolve(data))
       .then(() => this.queue.shift())
       .then(() => this.next());
@@ -51,4 +51,4 @@ class Queue {
 
 const queue = new Queue();
 
-export default str => new Promise(resolve => queue.add(str, resolve));
+export default (type, str) => new Promise(resolve => queue.add(type, str, resolve));
