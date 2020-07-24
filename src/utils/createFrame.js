@@ -1,7 +1,7 @@
 import calc, {init} from "./calc";
 import calc2, {init2} from "./calc2";
 
-const body = (script) => `
+const body = `
 <style>
   .container {
       width: 100px;
@@ -21,7 +21,7 @@ const body = (script) => `
 <div class="container">
   <div class="block" id="block" contenteditable></div>
 </div>
- `;
+`;
 
 export default () => {
   return new Promise((resolve) => {
@@ -37,7 +37,7 @@ export default () => {
     document.body.appendChild($iframe);
 
     $iframe.contentWindow.document.open();
-    $iframe.contentWindow.document.write(`<body><script>${script}</script>${body()}</body>`);
+    $iframe.contentWindow.document.write(`<body><script>${script}</script>${body}</body>`);
     $iframe.contentWindow.document.close();
 
     let isCalc = false;
