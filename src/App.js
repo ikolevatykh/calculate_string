@@ -2,7 +2,8 @@ import React from 'react';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'fast-text-encoding/text';
-import convertString from './utils/convertString';
+// import convertString from './utils/convertString';
+import convertString2 from './utils/convertString2';
 import './App.css';
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       return;
     }
 
-    convertString(type, e.target.value).then(data => {
+    convertString2(type, e.target.value).then(data => {
       const { result, time } = data;
       setConvertedStr(result);
       setMS(time);
