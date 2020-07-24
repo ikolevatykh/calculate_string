@@ -1,6 +1,5 @@
-const range = document.createRange();
-
 function calc(str, browser) {
+  const range = document.createRange();
   if (!calc.$block) {
     calc.$block = document.getElementById('block');
   }
@@ -61,7 +60,7 @@ function calc(str, browser) {
       let finish = false;
       let $prevEl = $el;
       let prevElTop = topEl;
-      while(!finish) {
+      while (!finish) {
         index += direction;
         const $nextEl = $block.childNodes.item(index);
         if (!$nextEl) {
@@ -97,7 +96,7 @@ function calc(str, browser) {
       }
     }
 
-    let result = resultIndexes.reduce(function(memo, value, index, arr){
+    let result = resultIndexes.reduce(function (memo, value, index, arr) {
       if (index === 0) {
         memo += str.substring(0, value + 1);
       } else {
@@ -141,16 +140,21 @@ function calc(str, browser) {
   return arrayStr.join('');
 }
 
-
-window.addEventListener("message", function(e) {
+export const init = () => {
+  window.addEventListener("message", function (e) {
     if (e.data.type === 'calc') {
-      const result = calc(e.data.str, e.data.browser);
+        const result = calc(e.data.str, e.data.browser);
 
-      window.top.postMessage({
-        type: 'calc',
-        time: e.data.time,
-        str: result,
-      }, '*');
-    }
-  },
+        window.top.postMessage({
+          type: 'calc',
+          time: e.data.time,
+          str: result,
+        }, '*');
+      }
+    },
   false);
+
+  window.top.postMessage({ type: 'calc_inited' }, '*');
+}
+
+export default calc;

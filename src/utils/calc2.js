@@ -46,7 +46,8 @@ function calc2(str, browser) {
   return arrayStr.join('');
 }
 
-window.addEventListener("message", function(e) {
+export const init2 = () => {
+  window.addEventListener("message", function (e) {
     if (e.data.type === 'calc2') {
       const result = calc2(e.data.str, e.data.browser);
 
@@ -58,3 +59,8 @@ window.addEventListener("message", function(e) {
     }
   },
   false);
+
+  window.top.postMessage({type: 'calc2_inited'}, '*');
+}
+
+export default calc2;

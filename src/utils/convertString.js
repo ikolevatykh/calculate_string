@@ -1,10 +1,18 @@
 import { detect } from 'detect-browser';
+import createFrame from "./createFrame";
 
 class Request {
+  constructor($iframe) {
+    this.$iframe = $iframe;
+  }
+
   send(type, str) {
+    const $iframe = this.$iframe;
+
     return new Promise(resolve => {
       const now = performance.now();
-      window.frames.iframeCalc.postMessage({
+
+      $iframe.contentWindow.postMessage({
         type: type || 'calc2',
         time: now,
         str,
@@ -24,10 +32,27 @@ class Request {
 }
 
 class Queue {
-  queue = []
+  queue = [];
+  $iframe = null;
+  isInitializing = false;
 
   add(type, str, resolve) {
     this.queue.push({ type, str, resolve });
+
+    if (this.isInitializing) {
+      return;
+    }
+    if (!this.$iframe) {
+      this.isInitializing = true;
+      const _this = this;
+      createFrame()
+        .then($iframe => {
+          _this.$iframe = $iframe;
+          _this.isInitializing = false
+          _this.next();
+        });
+      return;
+    }
 
     if (this.queue.length === 1) {
       this.next();
@@ -41,7 +66,7 @@ class Queue {
 
     const { type, str, resolve } = this.queue[0];
 
-    (new Request())
+    (new Request(this.$iframe))
       .send(type, str)
       .then(data => resolve(data))
       .then(() => this.queue.shift())
