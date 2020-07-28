@@ -1,16 +1,16 @@
 import convertString from "./utils/convertString";
 import convertString2 from "./utils/convertString2";
-import shuffle from 'lodash/shuffle';
-import range from 'lodash/range';
 import './index.css';
 
-const sum = arr => arr.reduce((memo, item) => memo + item, 0);
+const shuffle = window._.shuffle;
+const range = window._.range;
 
+const sum = arr => arr.reduce((memo, item) => memo + item, 0);
 const MAX_COUNT = 1000;
 const test10 = '1  tet a!_';
 const test100 = range(10).map(() => test10).join('');
 const test1000 = range(10).map(() => test100).join('');
-const testSuits = [test10 , test100, test1000];
+const testSuits = [test10, test100, test1000];
 
 async function test(options) {
   const {
