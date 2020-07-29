@@ -1,8 +1,11 @@
-function calc2(str, browser) {
+function calc2(str, options) {
   if (!calc2.$block) {
     calc2.$block = document.getElementById('block');
   }
   const $block = calc2.$block;
+  if (options && options.style) {
+    Object.keys(options.style).forEach(key => $block.style[key] = options.style[key]);
+  }
   const arr = str.split('');
   const $fragment = document.createDocumentFragment();
   for (let i = 0; i < arr.length; i += 1) {
@@ -31,10 +34,12 @@ function calc2(str, browser) {
 
   let y = ys[0];
   const arrayStr = [];
+  const positions = [];
   for (let i = 0; i < ys.length; i += 1) {
     if (y !== ys[i]) {
       if (str[i - 1] !== '\n') {
         arrayStr.push('\n');
+        positions.push(i - 1);
       }
       y = ys[i];
       arrayStr.push(str[i]);
@@ -43,13 +48,16 @@ function calc2(str, browser) {
     }
   }
 
-  return arrayStr.join('');
+  return {
+    text: arrayStr.join(''),
+    positions,
+  };
 }
 
 export const init2 = () => {
   window.addEventListener("message", function (e) {
     if (e.data.type === 'calc2') {
-      const result = calc2(e.data.str, e.data.browser);
+      const { text: result } = calc2(e.data.str);
 
       window.top.postMessage({
         type: 'calc',

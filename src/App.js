@@ -2,7 +2,6 @@ import React from 'react';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'fast-text-encoding/text';
-// import convertString from './utils/convertString';
 import convertString2 from './utils/convertString2';
 import './App.css';
 

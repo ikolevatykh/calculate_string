@@ -1,29 +1,24 @@
-import calc from "./calc";
 import calc2 from "./calc2";
 
 class Request {
-  send(type, str) {
+  send(str, options) {
     return new Promise(resolve => {
       let result;
       let time;
 
       const now = performance.now();
-      if (type === 'calc') {
-        result = calc(str);
-      } else {
-        result = calc2(str).text;
-      }
+      result = calc2(str, options);
+      const { text, positions } = result;
       time = performance.now() - now;
-
-      resolve({ result, time });
+      resolve({ result: text, time, positions });
     });
   }
 }
 
 class Queue {
   queue = [];
-  add(type, str, resolve) {
-    this.queue.push({ type, str, resolve });
+  add(str, options, resolve) {
+    this.queue.push({ str, options, resolve });
 
     if (this.queue.length === 1) {
       this.next();
@@ -35,10 +30,10 @@ class Queue {
       return;
     }
 
-    const { type, str, resolve } = this.queue[0];
+    const { options, str, resolve } = this.queue[0];
 
     (new Request())
-      .send(type, str)
+      .send(str, options)
       .then(data => resolve(data))
       .then(() => this.queue.shift())
       .then(() => this.next());
@@ -47,4 +42,4 @@ class Queue {
 
 const queue = new Queue();
 
-export default (type, str) => new Promise(resolve => queue.add(type, str, resolve));
+export default (str, options) => new Promise(resolve => queue.add(str, options, resolve));
