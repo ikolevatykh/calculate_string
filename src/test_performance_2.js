@@ -26,24 +26,32 @@ async function test(options) {
 
   while(counter < MAX_COUNT) {
     const str = shuffle(initialString).join('');
-    const { time } = await convertString4(str, { style });
-    calcTestResults.push(time);
+    const { time, performanceLineBreak } = await convertString4(str, { style });
+    calcTestResults.push({ time, performanceLineBreak });
     counter += 1;
   }
 
-  const avg = (sum(calcTestResults) / MAX_COUNT).toFixed(2);
-  return new Promise(resolve => resolve(avg));
+  const avgFull = (sum(calcTestResults.map(item => item.time)) / MAX_COUNT).toFixed(2);
+  const avgLineBreak = (sum(calcTestResults.map(item => item.performanceLineBreak)) / MAX_COUNT).toFixed(2);
+  return new Promise(resolve => resolve({
+    avgFull,
+    avgLineBreak,
+  }));
 }
 
 async function start() {
   const $body = document.getElementById('root');
-    for (const suite of testSuits) {
-      const value = await test({
-        initialString: suite,
-      });
-      const str = `<div>${suite.length}: ${value}</div>`;
-      $body.innerHTML += str;
-    }
+  $body.innerHTML += `<table><thead><tr><th>Length</th><th>avgFull</th><th>avgLineBreak</th></tr></thead><tbody id="tbody"></tbody></table>`;
+  const $tbody = document.getElementById('tbody');
+  for (const suite of testSuits) {
+    const {
+      avgFull,
+      avgLineBreak,
+    } = await test({
+      initialString: suite,
+    });
+    $tbody.innerHTML += `<tr><td>${suite.length}</td><td>${avgFull}</td><td>${avgLineBreak}</td></tr>`
+  }
 }
 
 start();
