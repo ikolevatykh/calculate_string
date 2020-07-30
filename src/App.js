@@ -2,15 +2,21 @@ import React from 'react';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'fast-text-encoding/text';
-import convertString2 from './utils/convertString2';
+import convertString4 from './utils/convertString4';
 import './App.css';
+
+const style = {
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-all',
+  width: '100px',
+  fontSize: '16px',
+  fontFamily: 'sans-serif',
+};
 
 function App() {
   const [str, setStr] = React.useState('');
   const [convertedStr, setConvertedStr] = React.useState('');
   const [ms, setMS] = React.useState(0);
-  const [type, setType] = React.useState('calc');
-  const handleChangeMode = () => setType(type === 'calc' ? 'calc2' : 'calc');
 
   const handleChangeInput = e => {
     setStr(e.target.value);
@@ -20,7 +26,7 @@ function App() {
       return;
     }
 
-    convertString2(type, e.target.value).then(data => {
+    convertString4(e.target.value, { style }).then(data => {
       const { result, time } = data;
       setConvertedStr(result);
       setMS(time);
@@ -38,10 +44,6 @@ function App() {
         <textarea value={convertedStr} />
       </div>
       <div>calc time: {ms}ms</div>
-      <div>
-        <p>current mode: {type === 'calc' ? 'with createRange' : 'only getBoundingClientRect for every letters\' span'}</p>
-        <p><button onClick={handleChangeMode}>Switch mode</button></p>
-      </div>
     </div>
   );
 }
