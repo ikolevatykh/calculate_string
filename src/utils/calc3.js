@@ -21,7 +21,10 @@ function calc3(str, options) {
       data = getLines(node).map(pos => pos + shift);
       shift = shift + node.textContent.length;
     } else {
-      // если node.nodeName === 'BR', то это поль разрыв, его мы не учитываем
+      // пользовательский разрыв
+      // если node.nodeName === 'BR', то это пользовательский разрыв, его мы не учитываем
+      // в ручном режиме появляются node.nodeName === 'DIV': это новая строка в contenteditable DIV.
+      //   она может содержать <BR> или TEXT
       shift += 1;
     }
     return [...memo, ...data];
