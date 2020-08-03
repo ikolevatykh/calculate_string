@@ -1,5 +1,8 @@
 'use strict';
+const fs = require('fs');
 require('expect-puppeteer');
+const pixelmatch = require('pixelmatch');
+const PNG = require('pngjs').PNG;
 
 beforeEach(async () => {
   await page.goto('http://localhost:5000/');
@@ -33,8 +36,10 @@ test('render', async () => {
     window.renderCalc('test', options);
   });
 
-  await page.screenshot({
-    path: './test/screenshots/1.png',
+  const png1 = await page.screenshot({
+    // path: './test/screenshots/1.png',
+    type: 'png',
+    encoding: 'binary',
     clip: {
       x: 0,
       y: 0,
@@ -42,8 +47,10 @@ test('render', async () => {
       height: 100,
     }
   });
-  await page.screenshot({
-    path: './test/screenshots/2.png',
+  const png2 = await page.screenshot({
+    // path: './test/screenshots/2.png',
+    type: 'png',
+    encoding: 'binary',
     clip: {
       x: 100,
       y: 0,
@@ -51,15 +58,16 @@ test('render', async () => {
       height: 100,
     }
   });
-  await page.screenshot({
-    path: './test/screenshots/3.png',
-    clip: {
-      x: 0,
-      y: 0,
-      width: 200,
-      height: 100,
-    }
-  });
 
-  expect(1).toBe(1);
+  const img1 = PNG.sync.read(png1);
+  const img2 = PNG.sync.read(png2);
+
+  let diff = pixelmatch(img1.data, img2.data, null, 100, 100, {threshold: 0.0});
+
+  if (diff > 0) {
+    fs.writeFileSync('test/screenshots/img1.png', png1);
+    fs.writeFileSync('test/screenshots/img2.png', png2);
+  }
+
+  expect(0).toBe(diff);
 });
