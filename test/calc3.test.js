@@ -10,7 +10,7 @@ beforeAll(async () => {
 });
 
 // afterEach(() => {
-//   // удалить DOM
+//
 // });
 
 const config = {
@@ -36,6 +36,8 @@ const config = {
 const cases = (() => {
   const result = [];
   let index = 0;
+  // Грязно, но зато - быстро
+  // Для корректного алгоритма нужно глянуть на гусеничный граф (дерево)
   for (let a = 0; a < config.width.length; a += 1) {
     for (let b = 0; b < config.fontSize.length; b += 1) {
       for (let c = 0; c < config.fontFamily.length; c += 1) {
