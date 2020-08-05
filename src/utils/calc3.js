@@ -14,6 +14,7 @@ function calc3(str, options) {
 
   const timeStart = performance.now();
 
+  // todo проверить textArea
   let shift = 0;
   const lineBreaks = [].reduce.call($block.childNodes, (memo, node) => {
     let data = [];
