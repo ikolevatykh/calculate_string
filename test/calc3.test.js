@@ -33,6 +33,22 @@ const config = {
   fontStyle: ['italic', 'normal'],
   textDecoration: ['underline', 'none'],
 }
+const defOptions = {
+  style: {
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'break-all',
+  }
+};
+const str = 'a-zA-Z0-9e;r gewfm;lefm l;;fw mfl;wm flwe fnerl kg\n\n\n!@#$ le\'rg nerlg k qler g%^&*()_+';
+// const str = `يولد جميع الناس أحرارًا متساوين في الكرامة والحقوق. وقد وهبوا عقلاً وضميرًا وعليهم أن يعامل بعضهم بعضًا بروح الإخاء.`;
+// const str = `
+// ₠₡₢₣₤₥₦₧₨₩₪₫€₭₮₯2
+// 0B0₰₱₲₳₴₵₶₷₸₹₺₻₼₽₾₿
+//
+// ℀℁ℂ℃℄℅℆ℇ℈℉ℊℋℌℍℎℏ2110ℐℑℒℓ℔ℕ№℗℘ℙℚℛℜℝ℞℟2120℠℡™℣ℤ℥Ω℧ℨ℩KÅ
+// ℬℭ℮ℯ2130ℰℱℲℳℴℵℶℷℸℹ℺℻ℼℽℾℿ2140⅀⅁⅂⅃⅄ⅅⅆⅇⅈⅉ⅊⅋⅌⅍ⅎ⅏2150⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞⅟2160ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅬⅭⅮⅯ2170ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼⅽⅾⅿ
+// `;
+
 const cases = (() => {
   const result = [];
   let index = 0;
@@ -46,7 +62,7 @@ const cases = (() => {
             for (let f = 0; f < config.textDecoration.length; f += 1) {
               result.push([{
                 index,
-                value: [a, b, c, d, e, f],
+                params: [a, b, c, d, e, f],
               }, 0, 0]);
               index += 1;
             }
@@ -70,7 +86,7 @@ describe(`test cases: ${COUNT}`, () => {
     "test",
     async (firstArg, secondArg, expectedResult) => {
       // debugger;
-      const { value, index } = firstArg;
+      const { params, index } = firstArg;
       if (index % 10 === 0) {
         const currentTime = Date.now();
         const leaveSec = Math.floor((currentTime - startTime) / 1000);
@@ -89,7 +105,20 @@ describe(`test cases: ${COUNT}`, () => {
         console.log(str);
       }
 
-      const width = await page.evaluate((value) => window.run(value), value);
+      const style = {
+        ...defOptions.style,
+        height: `${config.height}px`,
+        width: `${config.width[params[0]]}px`,
+        fontSize: `${config.fontSize[params[1]]}px`,
+        fontFamily: config.fontFamily[params[2]],
+        fontWeight: config.fontWeight[params[3]],
+        fontStyle: config.fontStyle[params[4]],
+        textDecoration: config.textDecoration[params[5]],
+      }
+      const options = { ...defOptions, style };
+      const width = config.width[params[0]];
+
+      await page.evaluate((...args) => window.run(...args), str, options);
       const png1 = await page.screenshot({
         type: 'png',
         encoding: 'binary',
@@ -115,9 +144,12 @@ describe(`test cases: ${COUNT}`, () => {
       const img1 = PNG.sync.read(png1);
       const img2 = PNG.sync.read(png2);
 
+      // смещение для шрифтов, которые вылазят за границу
+      const SHIFT = 5;
       let diff;
       try {
-        diff = pixelmatch(img1.data, img2.data, null, width + 5, config.height, {threshold: 0.5});
+        // threshold: точность. Ставим минимальную, начертание немного меняется при ручном переносе.
+        diff = pixelmatch(img1.data, img2.data, null, width + SHIFT, config.height, {threshold: 1});
       } catch (e) {
         const png3 = await page.screenshot({
           type: 'png',
@@ -139,8 +171,8 @@ describe(`test cases: ${COUNT}`, () => {
       if (diff > 0) {
         fs.writeFileSync(`test/screenshots/img${index}-0.png`, png1);
         fs.writeFileSync(`test/screenshots/img${index}-1.png`, png2);
-        debugger;
-        console.log('error value', value);
+        console.log('error value', params);
+        console.log('error style', style);
       }
 
       expect(0).toBe(diff);
