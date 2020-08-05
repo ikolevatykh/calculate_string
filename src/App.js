@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'fast-text-encoding/text';
-import BreakDetectQueue from './utils/BreakDetectQueue';
+import BreakDetectQueue from './utils/BreakDetect/BreakDetectQueue';
 import './App.css';
 
 const style = {

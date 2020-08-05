@@ -26,20 +26,17 @@ class Request {
   }
 
   next() {
-    clearTimeout(this.nextId);
-    this.nextId = setTimeout(() => {
-      if (this.queue.length <= 0) {
-        return;
-      }
+    if (this.queue.length <= 0) {
+      return;
+    }
 
-      const { options, str, resolve } = this.queue[0];
+    const { options, str, resolve } = this.queue[0];
 
-      (new Request())
-        .send(str, options)
-        .then(data => resolve(data))
-        .then(() => this.queue.shift())
-        .then(() => this.next());
-    }, 1000);
+    (new Request())
+      .send(str, options)
+      .then(data => resolve(data))
+      .then(() => this.queue.shift())
+      .then(() => this.next());
   }
 }
 

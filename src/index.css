@@ -21,10 +21,10 @@ code {
   padding: 0;
   margin: 0;
   top: -9999px;
+  /*top: 0;*/
   left: 0;
   visibility: hidden;
   position: absolute;
-  /*direction: rtl;*/
 }
 
 .block_visible {

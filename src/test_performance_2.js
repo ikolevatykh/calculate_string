@@ -1,17 +1,17 @@
-import BreakDetectQueue from "./utils/BreakDetectQueue";
+import BreakDetectQueue from "./utils/BreakDetect/BreakDetectQueue";
 import './index.css';
 
 const shuffle = window._.shuffle;
 const range = window._.range;
 
 const sum = arr => arr.reduce((memo, item) => memo + item, 0);
-const MAX_COUNT = 5;
+const MAX_COUNT = 1000;
 const test10 = '1  tet a!_';
 const test100 = `a b c d e f g h i j k k l m n o p q r s t u v w x y z !@#$%^&*()_+1234567890-=<>?/.,\\§[]{}<>!"№%:,%№`;
 const test1000 = range(10).map(() => test100).join('');
 const testSuits = [
-  // test10,
-  // test100,
+  test10,
+  test100,
   test1000,
 ];
 
