@@ -1,4 +1,4 @@
-import calc3 from "./utils/calc3";
+import calc3 from "./utils/BreakDetect";
 import './index.css';
 
 function getWrapper() {

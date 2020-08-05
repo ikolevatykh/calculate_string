@@ -1,15 +1,19 @@
-import convertString4 from "./utils/convertString4";
+import BreakDetectQueue from "./utils/BreakDetectQueue";
 import './index.css';
 
 const shuffle = window._.shuffle;
 const range = window._.range;
 
 const sum = arr => arr.reduce((memo, item) => memo + item, 0);
-const MAX_COUNT = 1000;
+const MAX_COUNT = 5;
 const test10 = '1  tet a!_';
 const test100 = `a b c d e f g h i j k k l m n o p q r s t u v w x y z !@#$%^&*()_+1234567890-=<>?/.,\\§[]{}<>!"№%:,%№`;
 const test1000 = range(10).map(() => test100).join('');
-const testSuits = [test10, test100, test1000];
+const testSuits = [
+  // test10,
+  // test100,
+  test1000,
+];
 
 const style = {
   whiteSpace: 'pre-wrap',
@@ -26,7 +30,7 @@ async function test(options) {
 
   while(counter < MAX_COUNT) {
     const str = shuffle(initialString).join('');
-    const { time, performanceLineBreak } = await convertString4(str, { style });
+    const { time, performanceLineBreak } = await BreakDetectQueue(str, { style });
     calcTestResults.push({ time, performanceLineBreak });
     counter += 1;
   }

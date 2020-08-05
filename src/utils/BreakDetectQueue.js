@@ -1,4 +1,4 @@
-import calc3 from "./calc3";
+import breakDetect from "./BreakDetect";
 
 class Request {
   send(str, options) {
@@ -7,7 +7,7 @@ class Request {
       let time;
 
       const now = performance.now();
-      result = calc3(str, options);
+      result = breakDetect(str, options);
       const { text, positions, performanceLineBreak } = result;
       time = performance.now() - now;
       resolve({ result: text, time, positions, performanceLineBreak });
@@ -26,17 +26,20 @@ class Request {
   }
 
   next() {
-    if (this.queue.length <= 0) {
-      return;
-    }
+    clearTimeout(this.nextId);
+    this.nextId = setTimeout(() => {
+      if (this.queue.length <= 0) {
+        return;
+      }
 
-    const { options, str, resolve } = this.queue[0];
+      const { options, str, resolve } = this.queue[0];
 
-    (new Request())
-      .send(str, options)
-      .then(data => resolve(data))
-      .then(() => this.queue.shift())
-      .then(() => this.next());
+      (new Request())
+        .send(str, options)
+        .then(data => resolve(data))
+        .then(() => this.queue.shift())
+        .then(() => this.next());
+    }, 1000);
   }
 }
 

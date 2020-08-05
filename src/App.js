@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'fast-text-encoding/text';
-import convertString4 from './utils/convertString4';
+import BreakDetectQueue from './utils/BreakDetectQueue';
 import './App.css';
 
 const style = {
@@ -26,7 +26,7 @@ function App() {
       return;
     }
 
-    convertString4(e.target.value, { style }).then(data => {
+    BreakDetectQueue(e.target.value, { style }).then(data => {
       const { result, time } = data;
       setConvertedStr(result);
       setMS(time);
