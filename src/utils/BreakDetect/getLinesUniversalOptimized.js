@@ -17,8 +17,6 @@ export default function getLinesUniversalOptimized(node) {
   // предыдущий последний индекс
   let prevLastIndex = 0;
 
-  debugger;
-
   for (let i = 0; i < linesCount - 1; i += 1) {
     // ширина строки (здесь и далее - текущей)
     const lineWidth = rects.item(i).width;
