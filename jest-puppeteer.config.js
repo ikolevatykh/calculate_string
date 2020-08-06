@@ -8,6 +8,7 @@ module.exports = {
   launch: {
     dumpio: true,
     headless: true,
+    // product: "chromium",
     args: [`--window-size=${800},${800}`]
   },
   browser: 'chromium',
